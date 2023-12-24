@@ -1,1 +1,1 @@
-https://github.com/users/dadanabdullah/packages/container/package/item-app
+https://github.com/dadanabdullah/a433-microservices/pkgs/container/item-app
