@@ -1,0 +1,41 @@
+# Menggunakan versi 3.8
+version: "3.8"
+
+# Membuat service item-app dan item-db
+services:
+  # Service item-app dari Github Container Registry
+  item-app:
+    image: "ghcr.io/dadanabdullah/item-app:v1"
+
+    # Port 8080 container akan di expose ke port 80 host
+    ports:
+      - "80:8080"
+
+    # Service item-app akan bergantung pada service item-db
+    depends_on:
+      item-db:
+        condition: service_healthy
+
+    # Service akan restart otomatis jika terjadi error
+    restart: always
+
+  # Service item-db (MongoDB) dari Docker Hub
+  item-db:
+    image: "mongo:3"
+    ports:
+      - "27017:27017"
+
+    # Menambahkan healthcheck untuk mengecek status MongoDB
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.stats()"]
+
+    # Volume app-db akan di mount ke /data/db
+    volumes:
+      - app-db:/data/db
+
+    # Service akan restart otomatis jika terjadi error
+    restart: always
+
+# Membuat volume app-db
+volumes:
+  app-db:
